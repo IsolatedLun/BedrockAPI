@@ -7,6 +7,6 @@ export const sequelize = new Sequelize({
   username: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSW || "postgres",
   database: process.env.DB_NAME || "BedrockDB",
-  port: parseInt(process.env.PORT) || 5432,
+  port: parseInt(process.env.DB_PORT) || 5432,
   models: [User, Note],
 });
