@@ -1,0 +1,22 @@
+info:
+  name: Register
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:{{PORT}}/users/register?username=newUser&password=amazing_password
+  params:
+    - name: username
+      value: newUser
+      type: query
+    - name: password
+      value: amazing_password
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
