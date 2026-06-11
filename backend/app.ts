@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 });
 
 (async() => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ alter: true });
     
     app.listen(PORT, () => {
         console.log(`Bedrock running at http://localhost:${PORT}`);

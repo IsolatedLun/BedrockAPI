@@ -5,7 +5,7 @@ import { Note } from '../notes/note';
 
 interface UserAttrs { 
   id: number; 
-  name: string; 
+  username: string; 
   password: string;
 }
 
@@ -15,7 +15,7 @@ type UserCreation = Optional<UserAttrs, 'id'>;
 export class User extends Model<UserAttrs, UserCreation> implements UserAttrs {
   public id!: number;
 
-  @Column name!: string;
+  @Column username!: string;
   @Column password!: string;
   @HasMany(() => Note) notes!: Note[];
 }
