@@ -1,20 +1,21 @@
 info:
-  name: Register
+  name: Create Note
   type: http
   seq: 1
 
 http:
   method: POST
-  url: http://localhost:{{PORT}}/users/register
+  url: http://localhost:{{PORT}}/notes/create
   body:
     type: json
     data: |-
       {
-        "username": "wad",
-        "password": "amazing",
-        "repeatPassword": "amazing"
+        "title": "yo",
+        "text": "<h3>3rd note<h3>"
       }
-  auth: inherit
+  auth:
+    type: bearer
+    token: "{{jwt}}"
 
 settings:
   encodeUrl: true

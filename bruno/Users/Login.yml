@@ -5,14 +5,13 @@ info:
 
 http:
   method: POST
-  url: http://localhost:{{PORT}}/users/register
+  url: http://localhost:{{PORT}}/users/login
   body:
     type: json
     data: |-
       {
         "username": "wad",
-        "password": "amazing",
-        "repeatPassword": "amazing"
+        "password": "amazing"
       }
   auth: inherit
 

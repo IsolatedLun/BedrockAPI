@@ -3,6 +3,7 @@ import { userLoginValidator, userRegistrationValidator } from "./userValidators"
 import { User } from "./user";
 import { UserLoginForm, UserRegistrationForm } from "../types";
 import bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 const userRouter = Router();
 
@@ -33,8 +34,14 @@ userRouter.post("/login", async(req, res) => {
         return res.status(400).send({ message: "User does not exist" });
 
     const isValidPassw: boolean = await bcrypt.compare(data.password, user.password);
-    if(isValidPassw)
-        return res.status(200).send({ ok: true }); // TODO: return jwt tok
+    if(isValidPassw) {
+        const tok = jwt.sign({
+            username: user.username,
+            password: user.password
+        }, process.env.JWT_SECRET || "secret");
+
+        return res.status(200).send({ tok });
+    }
     return res.status(400).send({ message: "Passwords do not match" });
 })
 

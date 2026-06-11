@@ -5,6 +5,7 @@ import { User } from '../users/user';
 
 interface NoteAttrs { 
     id: number; 
+    title: string; 
     text: string; 
     userId: number, 
     createdAt: Date, 
@@ -17,6 +18,7 @@ type NoteCreation = Optional<NoteAttrs, 'id' | "createdAt" | "editedAt">;
 export class Note extends Model<NoteAttrs, NoteCreation> implements NoteAttrs {
   public id!: number;
 
+  @Column title!: string;
   @Column text!: string;
   @Column createdAt!: Date;
   @Column editedAt!: Date;

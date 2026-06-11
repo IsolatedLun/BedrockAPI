@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import { sequelize } from "./db/sequelize";
 import userRouter from "./db/users/userRouter";
+import noteRouter from "./db/notes/noteRouter";
 
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +11,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/users", userRouter);
+app.use("/notes", noteRouter);
 
 app.get("/", (req, res) => {
     return res.status(200).send("<h1>wassup67</h1>");

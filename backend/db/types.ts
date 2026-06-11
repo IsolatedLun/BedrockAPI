@@ -1,3 +1,4 @@
+// users
 export interface UserRegistrationForm {
     username: string;
     password: string;
@@ -7,4 +8,10 @@ export interface UserRegistrationForm {
 export interface UserLoginForm {
     username: string;
     password: string;
+}
+
+// notes
+export interface NoteCreationForm {
+    title: string;
+    text: string;
 }
