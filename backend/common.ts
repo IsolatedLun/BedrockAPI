@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { expressjwt } from "express-jwt";
+import * as OTPAuth from "otpauth";
 
 dotenv.config();
 
@@ -13,3 +14,11 @@ export const emailTransporter = nodemailer.createTransport({
 });
 
 export const _expressjwt = expressjwt({ secret: process.env.JWT_SECRET || "secret", algorithms: ["HS256"] });
+export const otpAuth = new OTPAuth.TOTP({
+  issuer: "ACME",
+  label: "Alice",
+  algorithm: "SHA256",
+  digits: 6,
+  period: 30,
+  secret: process.env.OTP_SECRET || "secret"
+});

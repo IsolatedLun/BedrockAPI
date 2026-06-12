@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { userLoginValidator, userRegistrationValidator } from "./userValidators";
+import { userLoginValidator, userLoginWithOTPValidator, userRegistrationValidator } from "./userValidators";
 import argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import { User } from "./user";
-import { UserLoginForm, UserRegistrationForm } from "../types";
+import { UserLoginForm, UserLoginWithOTPForm, UserRegistrationForm } from "../types";
 import dotenv from "dotenv";
-import { emailTransporter } from "../../common";
+import { emailTransporter, otpAuth } from "../../common";
 
 dotenv.config();
 
 const userRouter = Router();
 
-userRouter.get("/all", async(req, res) => { 
+userRouter.get("/all", async(req, res) => {
     const users = await User.findAll();
     return res.status(200).send({ users });
 });
@@ -38,7 +38,8 @@ userRouter.post("/register", async(req, res) => {
         });
 
         res.status(200).send({ ok: true });
-    } catch {
+    } catch(e) {
+        console.log(e)
         res.status(400).send({ message: "Something went wrong" });
     }
 });
@@ -60,11 +61,42 @@ userRouter.post("/login", async(req, res) => {
             username: user.username,
             email: user.email,
             password: user.password
-        }, process.env.JWT_SECRET || "secret");
+        }, process.env.JWT_SECRET || "secret"); tok;
 
-        return res.status(200).send({ tok });
+        const otp: string = otpAuth.generate();
+        emailTransporter.sendMail({
+            to: user.email,
+            subject: `OTP Login - ${otp}`,
+            html: `Use <b>${otp}</b> to log into BedrockAPI`
+        })
+
+        return res.status(200).send({ otp: otpAuth.generate() });
     }
     return res.status(400).send({ message: "Passwords do not match" });
-})
+});
+
+userRouter.post("/login-otp", async(req, res) => {
+    const data: UserLoginWithOTPForm = req.body;
+    const validate = userLoginWithOTPValidator.validate(data);
+    if(validate.error)
+        return res.status(400).send({ message: validate.error.details[0].message });
+
+    const user = await User.findOne({ where: { email: data.email } });
+    if(user === null)
+        return res.status(400).send({ message: "User does not exist" });
+
+    if(otpAuth.validate({ token: data.otp, window: 1 }) === null) {
+        return res.status(400).send({ message: "OTP is invalid" });
+    }
+
+    const tok = jwt.sign({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        password: user.password
+    }, process.env.JWT_SECRET || "secret"); tok;
+
+    return res.status(200).send({ tok });
+});
 
 export default userRouter;

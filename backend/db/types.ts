@@ -11,6 +11,12 @@ export interface UserLoginForm {
     password: string;
 }
 
+export interface UserLoginWithOTPForm {
+    email: string;
+    otp: string;
+}
+
+
 // notes
 export interface NoteCreationForm {
     title: string;
