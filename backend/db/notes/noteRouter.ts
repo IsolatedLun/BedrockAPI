@@ -39,7 +39,7 @@ noteRouter.delete("/delete/:id", _expressjwt, async(req, res) => {
     return res.status(200).send({ ok: true, deleted: true, note });
 });
 
-noteRouter.get("/:id", _expressjwt, async(req, res) => {
+noteRouter.get("/:id", _expressjwt, async(req, res) => { 
     const authUser = (req as any).auth;
     const id: number = parseInt(req.params["id"] as string);
     if(isNaN(id))

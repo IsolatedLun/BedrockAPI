@@ -1,10 +1,10 @@
-# BedrockApp
+# BedrockApi
 A simple yet overengineered note app API (with markdown support) made with express and sequelize + postgresql.
 
 Authentication is done with JWT and passwords are encrypted with bcrypt.
 
 ## Endpoints
-*The API can be easily viewed and used ny any tool (insomnia, postman, etc.) but [bruno](https://www.usebruno.com/) is integrated*
+*The API can be easily viewed and used by any tools (insomnia, postman, etc.) but [bruno](https://www.usebruno.com/) is supported by default*
 
 ### Users
 - Register: /users/register
