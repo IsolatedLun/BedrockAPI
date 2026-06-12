@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { userLoginValidator, userRegistrationValidator } from "./userValidators";
-import { User } from "./user";
-import { UserLoginForm, UserRegistrationForm } from "../types";
 import argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
+import { User } from "./user";
+import { UserLoginForm, UserRegistrationForm } from "../types";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const userRouter = Router();
 

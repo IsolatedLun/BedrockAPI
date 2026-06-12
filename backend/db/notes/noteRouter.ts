@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { expressjwt } from "express-jwt";
+import dotenv from "dotenv";
 import { NoteCreationForm } from "../types";
 import { noteCreationValidator } from "./noteValidators";
 import { User } from "../users/user";
 import { Note } from "./note";
 import { marked } from "marked";
+
+dotenv.config();
 
 const noteRouter = Router();
 const _expressjwt = expressjwt({ secret: process.env.JWT_SECRET || "secret", algorithms: ["HS256"] });
