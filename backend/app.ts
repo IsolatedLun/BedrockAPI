@@ -14,7 +14,7 @@ app.use("/users", userRouter);
 app.use("/notes", noteRouter);
 
 app.get("/", (req, res) => {
-    return res.status(200).send("<h1>wassup67</h1>");
+    return res.status(200).send("<h1>server works</h1>");
 });
 
 (async() => {

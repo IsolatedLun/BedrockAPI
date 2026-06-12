@@ -36,6 +36,7 @@ userRouter.post("/login", async(req, res) => {
     const isValidPassw: boolean = await bcrypt.compare(data.password, user.password);
     if(isValidPassw) {
         const tok = jwt.sign({
+            id: user.id,
             username: user.username,
             password: user.password
         }, process.env.JWT_SECRET || "secret");
