@@ -3,6 +3,7 @@ import { UserLoginForm, UserRegistrationForm } from "../types";
 
 export const userRegistrationValidator = Joi.object<UserRegistrationForm>({
     username: Joi.string().alphanum().min(2).max(32).required(),
+    email: Joi.string().email().required(),
     password: Joi.string().min(2).max(8).required(),
     repeatPassword: Joi.string()
         .valid(Joi.ref("password"))

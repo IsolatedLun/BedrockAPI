@@ -5,7 +5,8 @@ import { Note } from '../notes/note';
 
 interface UserAttrs { 
   id: number; 
-  username: string; 
+  username: string;
+  email: string;
   password: string;
 }
 
@@ -16,6 +17,7 @@ export class User extends Model<UserAttrs, UserCreation> implements UserAttrs {
   public id!: number;
 
   @Column username!: string;
+  @Column email!: string;
   @Column password!: string;
   @HasMany(() => Note) notes!: Note[];
 }

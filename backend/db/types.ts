@@ -1,6 +1,7 @@
 // users
 export interface UserRegistrationForm {
     username: string;
+    email: string;
     password: string;
     repeatPassword: string;
 };

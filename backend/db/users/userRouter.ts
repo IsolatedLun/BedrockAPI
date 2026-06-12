@@ -5,6 +5,7 @@ import * as jwt from "jsonwebtoken";
 import { User } from "./user";
 import { UserLoginForm, UserRegistrationForm } from "../types";
 import dotenv from "dotenv";
+import { emailTransporter } from "../../common";
 
 dotenv.config();
 
@@ -22,7 +23,15 @@ userRouter.post("/register", async(req, res) => {
 
     try {
         const passwHash = await argon2.hash(data.password);
-        await User.create({ username: data.username, password: passwHash });
+        await User.create({ username: data.username, email: data.email, password: passwHash });
+
+        emailTransporter.sendMail({
+            from: "noreply_bedrock@gmail.com",
+            to: data.email,
+            subject: "Bedrock registration",
+            html: "Registration successful, please login"
+        });
+
         res.status(200).send({ ok: true });
     } catch {
         res.status(400).send({ message: "Something went wrong" });
@@ -44,6 +53,7 @@ userRouter.post("/login", async(req, res) => {
         const tok = jwt.sign({
             id: user.id,
             username: user.username,
+            email: user.email,
             password: user.password
         }, process.env.JWT_SECRET || "secret");
 
