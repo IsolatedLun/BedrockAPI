@@ -15,7 +15,7 @@ noteRouter.post("/create", _expressjwt,  async(req, res) => {
     if(validate.error)
         return res.status(400).send({ message: validate.error.details[0].message });
 
-    const user = await User.findOne({ where: { username: (req as any).auth.username } });
+    const user = await User.findOne({ where: { id: (req as any).auth.id } });
     const note = await Note.create({ userId: user.id, title: data.title, text: data.text });
 
     return res.status(200).send({ ok: true, note });
