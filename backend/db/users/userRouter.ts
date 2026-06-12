@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userLoginValidator, userRegistrationValidator } from "./userValidators";
 import { User } from "./user";
 import { UserLoginForm, UserRegistrationForm } from "../types";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 
 const userRouter = Router();
@@ -17,10 +17,13 @@ userRouter.post("/register", async(req, res) => {
     if(existingUser)
         return res.status(400).send({ message: "User already exists" });
 
-    bcrypt.hash(data.password, 12).then(async(hash: string) => {
-        await User.create({ username: data.username, password: hash });
+    try {
+        const passwHash = await argon2.hash(data.password);
+        await User.create({ username: data.username, password: passwHash });
         res.status(200).send({ ok: true });
-    });
+    } catch {
+        res.status(400).send({ message: "Something went wrong" });
+    }
 });
 
 userRouter.post("/login", async(req, res) => {
@@ -33,7 +36,7 @@ userRouter.post("/login", async(req, res) => {
     if(user === null)
         return res.status(400).send({ message: "User does not exist" });
 
-    const isValidPassw: boolean = await bcrypt.compare(data.password, user.password);
+    const isValidPassw: boolean = await argon2.verify(user.password, data.password);
     if(isValidPassw) {
         const tok = jwt.sign({
             id: user.id,
