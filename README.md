@@ -3,6 +3,10 @@ A simple yet overengineered note app API (with markdown support) made with expre
 
 Authentication is done with JWT and passwords are encrypted with bcrypt.
 
+## How to run
+- `npm run dev`, runs with locally defined models
+- `npm run start`, uses migrations
+
 ## Endpoints
 *The API can be easily viewed and used by any tools (insomnia, postman, etc.) but [bruno](https://www.usebruno.com/) is supported by default*
 

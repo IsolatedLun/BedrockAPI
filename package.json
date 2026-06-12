@@ -6,7 +6,8 @@
   "author": "isolated",
   "type": "commonjs",
   "scripts": {
-    "dev": "node -r ts-node/register backend/app.ts"
+    "dev": "node -r ts-node/register backend/app.ts",
+    "start": "cd backend && sequelize db:migrate && sequelize db:seed:all && cd .. && node -r ts-node/register backend/app.ts"
   },
   "dependencies": {
     "argon2": "^0.44.0",
@@ -27,6 +28,7 @@
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.9.2",
+    "sequelize-cli": "^6.6.5",
     "ts-node": "^10.9.2"
   }
 }

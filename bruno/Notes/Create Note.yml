@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "title": "yo",
-        "text": "<h3>3rd note<h3>"
+        "title": "amazing note",
+        "text": "![Minion](https://octodex.github.com/images/minion.png)"
       }
   auth:
     type: bearer
