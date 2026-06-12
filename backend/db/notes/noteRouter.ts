@@ -11,6 +11,11 @@ dotenv.config();
 
 const noteRouter = Router();
 
+noteRouter.get("/all", async(req, res) => { 
+    const notes = await Note.findAll();
+    return res.status(200).send({ notes });
+});
+
 noteRouter.post("/create", _expressjwt,  async(req, res) => {
     const data: NoteCreationForm = req.body;
     const validate = noteCreationValidator.validate(data);

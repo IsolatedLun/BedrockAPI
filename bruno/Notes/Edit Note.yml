@@ -1,14 +1,14 @@
 info:
   name: Edit Note
   type: http
-  seq: 4
+  seq: 5
 
 http:
   method: PATCH
   url: http://localhost:{{PORT}}/notes/edit/:id
   params:
     - name: id
-      value: "2"
+      value: "5"
       type: path
   body:
     type: json

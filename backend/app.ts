@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import { sequelize } from "./db/sequelize";
 import userRouter from "./db/users/userRouter";
 import noteRouter from "./db/notes/noteRouter";
-import { emailTransporter } from "./common";
 
 dotenv.config();
 

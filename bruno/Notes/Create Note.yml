@@ -1,7 +1,7 @@
 info:
   name: Create Note
   type: http
-  seq: 1
+  seq: 3
 
 http:
   method: POST
@@ -11,7 +11,7 @@ http:
     data: |-
       {
         "title": "amazing note",
-        "text": "![Minion](https://octodex.github.com/images/minion.png)"
+        "text": "![Minion](https://picsum.photos/200/300)"
       }
   auth:
     type: bearer

@@ -11,6 +11,11 @@ dotenv.config();
 
 const userRouter = Router();
 
+userRouter.get("/all", async(req, res) => { 
+    const users = await User.findAll();
+    return res.status(200).send({ users });
+});
+
 userRouter.post("/register", async(req, res) => {
     const data: UserRegistrationForm = req.body;
     const validate = userRegistrationValidator.validate(data);

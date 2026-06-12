@@ -1,7 +1,7 @@
 info:
   name: Login
   type: http
-  seq: 2
+  seq: 3
 
 http:
   method: POST
@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "username": "wad",
-        "password": "amazing"
+        "username": "joe123",
+        "password": "passw123"
       }
   auth: inherit
 
