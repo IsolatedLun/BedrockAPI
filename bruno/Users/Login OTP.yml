@@ -1,17 +1,17 @@
 info:
-  name: Login
+  name: Login OTP
   type: http
-  seq: 3
+  seq: 4
 
 http:
   method: POST
-  url: http://localhost:{{PORT}}/users/login
+  url: http://localhost:{{PORT}}/users/login-otp
   body:
     type: json
     data: |-
       {
-        "username": "joe67",
-        "password": "passw123"
+        "email": "herojoe210@gmail.com",
+        "otp": "664618"
       }
   auth: inherit
 

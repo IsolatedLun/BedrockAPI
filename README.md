@@ -1,7 +1,7 @@
-# BedrockApi
+# BedrockAPI
 A simple yet overengineered note app API (with markdown support) made with express and sequelize + postgresql.
 
-Authentication is done with JWT and passwords are encrypted with bcrypt.
+Authentication is done with JWT + OTP via google SMTP and passwords are encrypted with argon2.
 
 ## How to run
 ***postgresql must be installed***
@@ -9,7 +9,7 @@ Authentication is done with JWT and passwords are encrypted with bcrypt.
 - [Setup Google SMTP](https://dev.to/likhit/i-tried-to-send-emails-using-gmail-smtp-heres-what-actually-worked-2ec1)
 - Populate .env using .example.env as a reference
 - `npm run dev`, runs with locally defined models
-- `npm run start`, uses migrations
+- `npm run start`, uses migrations + executes seeders
 
 
 ## Endpoints
@@ -18,6 +18,7 @@ Authentication is done with JWT and passwords are encrypted with bcrypt.
 ### Users
 - Register: /users/register
 - Login: /users/login
+- Login OTP: /users/login-otp
 
 ### Notes
 ***Disclaimer: a valid token must be used in the Authorization header***

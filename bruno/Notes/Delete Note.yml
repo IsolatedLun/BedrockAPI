@@ -8,7 +8,7 @@ http:
   url: http://localhost:{{PORT}}/notes/delete/:id
   params:
     - name: id
-      value: "1"
+      value: "9"
       type: path
   body:
     type: json

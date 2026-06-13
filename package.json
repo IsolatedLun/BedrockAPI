@@ -21,6 +21,7 @@
     "marked": "^18.0.5",
     "morgan": "^1.11.0",
     "nodemailer": "^8.0.11",
+    "otpauth": "^9.5.1",
     "pg": "^8.21.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.8",
