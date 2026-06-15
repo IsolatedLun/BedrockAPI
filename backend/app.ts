@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { sequelize } from "./db/sequelize";
 import userRouter from "./db/users/userRouter";
 import noteRouter from "./db/notes/noteRouter";
+import { User } from "./db/users/user";
+import { Note } from "./db/notes/note";
 
 dotenv.config();
 
@@ -23,6 +25,13 @@ app.use("/notes", noteRouter);
 
 app.get("/", (req, res) => {
     return res.status(200).send("<h1>server works</h1>");
+});
+
+app.delete("/reset", async(req, res) => {
+    await User.truncate();
+    await Note.truncate();
+
+    return res.status(200).send({ ok: true });
 });
 
 (async() => {

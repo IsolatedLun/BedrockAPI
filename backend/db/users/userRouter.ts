@@ -33,8 +33,8 @@ userRouter.post("/register", async(req, res) => {
         emailTransporter.sendMail({
             from: "noreply_bedrock@gmail.com",
             to: data.email,
-            subject: "Bedrock registration",
-            html: "Registration successful, please login"
+            subject: "Bedrock Registration",
+            html: `Registration for '${data.username}' successful, please continue to the login page`
         });
 
         res.status(200).send({ ok: true });
@@ -66,7 +66,7 @@ userRouter.post("/login", async(req, res) => {
         const otp: string = otpAuth.generate();
         emailTransporter.sendMail({
             to: user.email,
-            subject: `OTP Login - ${otp}`,
+            subject: `BedrockAPI OTP Login - ${otp}`,
             html: `Use <b>${otp}</b> to log into BedrockAPI`
         })
 
