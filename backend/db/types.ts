@@ -11,8 +11,8 @@ export interface UserLoginForm {
     password: string;
 }
 
-export interface UserLoginWithOTPForm {
-    username: string;
+export interface UserLoginWithOTPForm { 
+    token: string;
     otp: string;
 }
 

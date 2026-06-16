@@ -4,8 +4,15 @@ import { User } from "./user";
 import { emailTransporter, otpAuth } from "../../common";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { PV } from "../pv/pv";
+import { generateRandTok } from "../../utils";
 
 dotenv.config();
+
+export async function ViewAllUsers(req: any, res: any) {
+    const users = await User.findAll();
+    return res.status(200).send({ users });
+}
 
 export async function registerUser(req: any, res: any) {
     const data: UserRegistrationForm = req.body;
@@ -17,6 +24,7 @@ export async function registerUser(req: any, res: any) {
     try {
         const passwHash = await argon2.hash(data.password);
         await User.create({ username: data.username, email: data.email, password: passwHash });
+        await PV.create({ otp: otpAuth.generate(), attempts: 0, token: generateRandTok(), username: data.username });
 
         emailTransporter.sendMail({
             from: "noreply_bedrock@gmail.com",

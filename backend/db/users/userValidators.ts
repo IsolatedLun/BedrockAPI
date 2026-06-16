@@ -24,6 +24,5 @@ export const userPassswResetValidator = Joi.object<UserPasswResetForm>({
 });
 
 export const userLoginWithOTPValidator = Joi.object<UserLoginWithOTPForm>({
-    username: Joi.string().alphanum().min(2).max(32).required(),
     otp: Joi.string().required()
 });

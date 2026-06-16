@@ -2,6 +2,7 @@ import * as jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 import Joi from "joi";
 import { User } from "./users/user";
+import { Note } from "./notes/note";
 
 dotenv.config();
 
@@ -34,5 +35,24 @@ export async function UserRequired(req: any, res: any, next: any) {
         return res.status(400).send({ message: "User does not exist" });
 
     req.auth = user;
+    next();
+}
+
+export async function ProtectedNote(req: any, res: any, next: any) {
+    const id: number = parseInt(req.params["id"] as string);
+    if(isNaN(id))
+        return res.status(400).send({ message: `"${id}" is an invalid id` });
+
+    const note = await Note.findByPk(id);
+    if(note === null)
+        return res.status(400).send({ message: `Note with id of "${id}" not found` });
+
+    const user = await User.findByPk(note.userId);
+    console.log(user)
+    console.log(req.auth)
+    if(user.id != req.auth.id)
+        return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
+
+    req.note = note;
     next();
 }
