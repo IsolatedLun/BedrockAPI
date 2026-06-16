@@ -15,14 +15,23 @@ Authentication is done with JWT + OTP via google SMTP and passwords are encrypte
 ## Endpoints
 ***The API can be easily viewed and used by any tools (insomnia, postman, etc.) but [bruno](https://www.usebruno.com/) is supported by default***
 
+### Root
+- Root: /
+- Reset: /reset
+
 ### Users
+- View All: /users/all
 - Register: /users/register
 - Login: /users/login
 - Login OTP: /users/login-otp
 
 ### Notes
 ***Disclaimer: a valid token must be used in the Authorization header***
+- View All: /notes/all
 - View: /notes/:id
 - Create: /notes/create
 - Delete: /notes/delete/:id
 - Edit: /notes/edit/:id
+- Search: /notes/search
+
+- Export PDF: /notes/export-pdf/:id
