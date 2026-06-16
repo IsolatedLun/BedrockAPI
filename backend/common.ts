@@ -19,6 +19,6 @@ export const otpAuth = new OTPAuth.TOTP({
   label: "Alice",
   algorithm: "SHA256",
   digits: 6,
-  period: 30,
+  period: parseInt(process.env.OTP_PERIOD) || 45,
   secret: process.env.OTP_SECRET || "secret"
 });

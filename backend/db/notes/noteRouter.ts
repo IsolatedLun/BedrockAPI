@@ -40,7 +40,7 @@ noteRouter.delete("/delete/:id", _expressjwt, async(req, res) => {
 
     const user = await User.findByPk(note.userId);
     if(user.id != authUser.id)
-        return res.status(400).send({ message: `Note with id of ${id} does not belong to user` });
+        return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
 
     await Note.destroy({ where: { id: note.id } });
     return res.status(200).send({ ok: true, deleted: true, note });
@@ -58,7 +58,7 @@ noteRouter.get("/:id", _expressjwt, async(req, res) => {
 
     const user = await User.findByPk(note.userId);
     if(user.id != authUser.id)
-        return res.status(400).send({ message: `Note with id of ${id} does not belong to user` });
+        return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
 
     return res.status(200).send(marked.parse(`# ${note.title}\n ${note.text}`));
 });
@@ -80,7 +80,7 @@ noteRouter.patch("/edit/:id", _expressjwt, async(req, res) => {
 
     const user = await User.findByPk(note.userId);
     if(user.id != authUser.id)
-        return res.status(400).send({ message: `Note with id of ${id} does not belong to user` });
+        return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
 
     note.set({ title: data.title, text: data.text });
     await note.save();

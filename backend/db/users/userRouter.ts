@@ -34,7 +34,7 @@ userRouter.post("/register", async(req, res) => {
             from: "noreply_bedrock@gmail.com",
             to: data.email,
             subject: "Bedrock Registration",
-            html: `Registration for '${data.username}' successful, please continue to the login page`
+            html: `Registration for "${data.username}" successful, please continue to the login page`
         });
 
         res.status(200).send({ ok: true });
