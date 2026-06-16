@@ -7,6 +7,7 @@ import { Note } from "./note";
 import { marked } from "marked";
 import { _expressjwt } from "../../common";
 import { Op } from "sequelize";
+import { markdownToPdf } from "@mdpdf/mdpdf";
 
 dotenv.config();
 
@@ -95,6 +96,24 @@ noteRouter.patch("/edit/:id", _expressjwt, async(req, res) => {
 // ========
 // ========
 
+noteRouter.get("/export-pdf/:id", _expressjwt, async(req, res) => {
+    const authUser = (req as any).auth;
+    const id: number = parseInt(req.params["id"] as string);
+    if(isNaN(id))
+        return res.status(400).send({ message: `"${id}" is an invalid id` });
+
+    const note = await Note.findByPk(id);
+    if(note === null)
+        return res.status(400).send({ message: `Note with id of "${id}" not found` });
+
+    const user = await User.findByPk(note.userId);
+    if(user === null || user.id != authUser.id)
+        return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
+
+    const pdf = await markdownToPdf(`# ${note.title}\n ${note.text}`);
+    return res.status(200).send(pdf);
+});
+
 noteRouter.post("/search", _expressjwt, async(req, res) => {
     const authUser = (req as any).auth;
     const data: NoteSearchForm = req.body;
@@ -111,10 +130,10 @@ noteRouter.post("/search", _expressjwt, async(req, res) => {
             userId: authUser.id,
             [Op.or]: [
                 {
-                    title: { [Op.like]: `%${data.title ?? ""}%` }
+                    title: { [Op.like]: `%${data.title ?? ""}` }
                 },
                 {
-                    text: { [Op.like]: `%${data.text ?? ""}%` }
+                    text: { [Op.iLike]: `%${data.text ?? ""}%` }
                 }
             ]
         }

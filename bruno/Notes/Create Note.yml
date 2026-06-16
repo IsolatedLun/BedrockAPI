@@ -1,7 +1,7 @@
 info:
   name: Create Note
   type: http
-  seq: 3
+  seq: 4
 
 http:
   method: POST
@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "title": "amazing note",
+        "title": "new note",
         "text": "![Picture](https://picsum.photos/200/300)"
       }
   auth:

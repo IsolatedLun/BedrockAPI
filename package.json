@@ -10,6 +10,7 @@
     "start": "cd backend && sequelize db:migrate && sequelize db:seed:all && cd .. && node -r ts-node/register backend/app.ts"
   },
   "dependencies": {
+    "@mdpdf/mdpdf": "^0.1.6",
     "argon2": "^0.44.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
