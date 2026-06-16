@@ -11,7 +11,7 @@ http:
     data: |-
       {
         "title": "amazing note",
-        "text": "![Minion](https://picsum.photos/200/300)"
+        "text": "![Picture](https://picsum.photos/200/300)"
       }
   auth:
     type: bearer

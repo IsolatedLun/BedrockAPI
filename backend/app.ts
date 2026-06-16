@@ -28,8 +28,8 @@ app.get("/", (req, res) => {
 });
 
 app.delete("/reset", async(req, res) => {
-    await User.truncate();
-    await Note.truncate();
+    await User.truncate({ cascade: true });
+    await Note.truncate({ cascade: true });
 
     return res.status(200).send({ ok: true });
 });
