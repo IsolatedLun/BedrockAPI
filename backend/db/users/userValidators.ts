@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { UserLoginForm, UserLoginWithOTPForm, UserRegistrationForm } from "../types";
+import { UserLoginForm, UserLoginWithOTPForm, UserPasswResetForm, UserRegistrationForm } from "../types";
 
 export const userRegistrationValidator = Joi.object<UserRegistrationForm>({
     username: Joi.string().alphanum().min(2).max(32).required(),
@@ -15,6 +15,12 @@ export const userRegistrationValidator = Joi.object<UserRegistrationForm>({
 export const userLoginValidator = Joi.object<UserLoginForm>({
     username: Joi.string().alphanum().min(2).max(32).required(),
     password: Joi.string().min(2).max(8).required()
+});
+
+export const userPassswResetValidator = Joi.object<UserPasswResetForm>({
+    username: Joi.string().alphanum().min(2).max(32).required(),
+    email: Joi.string().email().required(),
+    newPassword: Joi.string().min(2).max(8).required()
 });
 
 export const userLoginWithOTPValidator = Joi.object<UserLoginWithOTPForm>({

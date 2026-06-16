@@ -16,6 +16,11 @@ export interface UserLoginWithOTPForm {
     otp: string;
 }
 
+export interface UserPasswResetForm {
+    username: string;
+    email: string;
+    newPassword: string
+}
 
 // notes
 export interface NoteCreationForm {

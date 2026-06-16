@@ -39,7 +39,6 @@ userRouter.post("/register", async(req, res) => {
 
         res.status(200).send({ ok: true });
     } catch(e) {
-        console.log(e)
         res.status(400).send({ message: "Something went wrong" });
     }
 });

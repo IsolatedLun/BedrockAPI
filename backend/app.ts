@@ -7,10 +7,16 @@ import userRouter from "./db/users/userRouter";
 import noteRouter from "./db/notes/noteRouter";
 import { User } from "./db/users/user";
 import { Note } from "./db/notes/note";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
 const PORT = parseInt(process.env.SERVER_PORT) || 3000;
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 mins
+  max: 100, // 100 requests per window
+  message: "Spam detected, try again later"
+});
 
 const app = express();
 app.use(morgan("dev"));
@@ -19,6 +25,7 @@ app.use(cors({
   origin: "*",
   optionsSuccessStatus: 200
 }));
+app.use(limiter);
 
 app.use("/users", userRouter);
 app.use("/notes", noteRouter);
