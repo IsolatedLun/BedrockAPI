@@ -81,7 +81,7 @@ userRouter.post("/login-otp", async(req, res) => {
     if(validate.error)
         return res.status(400).send({ message: validate.error.details[0].message });
 
-    const user = await User.findOne({ where: { email: data.email } });
+    const user = await User.findOne({ where: { username: data.username } });
     if(user === null)
         return res.status(400).send({ message: "User does not exist" });
 

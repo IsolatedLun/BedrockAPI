@@ -12,13 +12,18 @@ export interface UserLoginForm {
 }
 
 export interface UserLoginWithOTPForm {
-    email: string;
+    username: string;
     otp: string;
 }
 
 
 // notes
 export interface NoteCreationForm {
+    title: string;
+    text: string;
+}
+
+export interface NoteSearchForm {
     title: string;
     text: string;
 }

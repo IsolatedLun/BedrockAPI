@@ -1,0 +1,23 @@
+info:
+  name: Search
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://localhost:{{PORT}}/notes/search
+  body:
+    type: json
+    data: |-
+      {
+        "text": "pic"
+      }
+  auth:
+    type: bearer
+    token: "{{JWT}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
