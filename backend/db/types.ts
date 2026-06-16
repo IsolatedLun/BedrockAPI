@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 // users
 export interface UserRegistrationForm {
     username: string;
@@ -32,3 +34,6 @@ export interface NoteSearchForm {
     title: string;
     text: string;
 }
+
+// misc
+export type AuthRequest = Request & { auth: any };

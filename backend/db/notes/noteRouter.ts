@@ -20,7 +20,7 @@ noteRouter.get(
 );
 
 noteRouter.post(
-    "/create", 
+    "/create",
     VerifyUser, 
     ValidateBody(noteCreationValidator), 
     CreateNote

@@ -5,13 +5,31 @@ import { UserRequired, ValidateBody } from "../middleware";
 import { userLoginValidator, userLoginWithOTPValidator, userRegistrationValidator } from "./userValidators";
 
 dotenv.config();
-
 const userRouter = Router();
 
-userRouter.get("/all", ViewAllUsers);
+userRouter.get(
+    "/all", 
+    ViewAllUsers
+);
 
-userRouter.post("/register", ValidateBody(userRegistrationValidator), registerUser);
-userRouter.post("/login", ValidateBody(userLoginValidator), UserRequired, loginUser);
-userRouter.post("/login-otp", ValidateBody(userLoginWithOTPValidator), UserRequired, loginUserWithOTP);
+userRouter.post(
+    "/register", 
+    ValidateBody(userRegistrationValidator), 
+    registerUser
+);
+
+userRouter.post(
+    "/login", 
+    ValidateBody(userLoginValidator), 
+    UserRequired, 
+    loginUser as any
+);
+
+userRouter.post(
+    "/login-otp", 
+    ValidateBody(userLoginWithOTPValidator), 
+    UserRequired, 
+    loginUserWithOTP as any
+);
 
 export default userRouter;

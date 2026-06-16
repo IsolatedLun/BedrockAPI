@@ -1,20 +1,21 @@
 import argon2 from "argon2";
-import { UserLoginForm, UserLoginWithOTPForm, UserRegistrationForm } from "../types";
+import { AuthRequest, UserLoginForm, UserLoginWithOTPForm, UserRegistrationForm } from "../types";
 import { User } from "./user";
 import { emailTransporter, otpAuth } from "../../common";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { PV } from "../pv/pv";
 import { generateRandTok } from "../../utils";
+import { Request, Response } from 'express';
 
 dotenv.config();
 
-export async function ViewAllUsers(req: any, res: any) {
+export async function ViewAllUsers(req: Request, res: Response) {
     const users = await User.findAll();
     return res.status(200).send({ users });
 }
 
-export async function registerUser(req: any, res: any) {
+export async function registerUser(req: Request, res: Response) {
     const data: UserRegistrationForm = req.body;
     
     const existingUser = await User.findOne({ where: { username: data.username, email: data.email } });
@@ -39,7 +40,7 @@ export async function registerUser(req: any, res: any) {
     }
 }
 
-export async function loginUser(req: any, res: any) {
+export async function loginUser(req: AuthRequest, res: Response) {
     const data: UserLoginForm = req.body;
     const user = req.auth;
 
@@ -57,7 +58,7 @@ export async function loginUser(req: any, res: any) {
     return res.status(400).send({ message: "Passwords do not match" });
 }
 
-export async function loginUserWithOTP(req: any, res: any) {
+export async function loginUserWithOTP(req: AuthRequest, res: Response) {
     const data: UserLoginWithOTPForm = req.body;
     const user = req.auth;
 
