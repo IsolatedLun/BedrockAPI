@@ -6,7 +6,7 @@
   "author": "isolated",
   "type": "commonjs",
   "scripts": {
-    "dev": "node -r ts-node/register backend/app.ts",
+    "dev": "node --watch-path=./backend -r ts-node/register backend/app.ts",
     "start": "cd backend && sequelize db:migrate && sequelize db:seed:all && cd .. && node -r ts-node/register backend/app.ts"
   },
   "dependencies": {

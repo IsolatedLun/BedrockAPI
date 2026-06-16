@@ -5,9 +5,9 @@ import { noteCreationValidator, noteSearchValidator } from "./noteValidators";
 import { User } from "../users/user";
 import { Note } from "./note";
 import { marked } from "marked";
-import { _expressjwt } from "../../common";
 import { Op } from "sequelize";
 import { markdownToPdf } from "@mdpdf/mdpdf";
+import { VerifyUser } from "../middleware";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ noteRouter.get("/all", async(req, res) => {
     return res.status(200).send({ notes });
 });
 
-noteRouter.get("/:id", _expressjwt, async(req, res) => { 
+noteRouter.get("/:id", VerifyUser, async(req, res) => { 
     const authUser = (req as any).auth;
     const id: number = parseInt(req.params["id"] as string);
     if(isNaN(id))
@@ -35,7 +35,7 @@ noteRouter.get("/:id", _expressjwt, async(req, res) => {
     return res.status(200).send(marked.parse(`# ${note.title}\n ${note.text}`));
 });
 
-noteRouter.post("/create", _expressjwt,  async(req, res) => {
+noteRouter.post("/create", VerifyUser,  async(req, res) => {
     const data: NoteCreationForm = req.body;
     const validate = noteCreationValidator.validate(data);
     if(validate.error)
@@ -50,7 +50,7 @@ noteRouter.post("/create", _expressjwt,  async(req, res) => {
     return res.status(200).send({ ok: true, note });
 });
 
-noteRouter.delete("/delete/:id", _expressjwt, async(req, res) => {
+noteRouter.delete("/delete/:id", VerifyUser, async(req, res) => {
     const authUser = (req as any).auth;
     const id: number = parseInt(req.params["id"] as string);
     if(isNaN(id))
@@ -68,7 +68,7 @@ noteRouter.delete("/delete/:id", _expressjwt, async(req, res) => {
     return res.status(200).send({ ok: true, deleted: true, note });
 });
 
-noteRouter.patch("/edit/:id", _expressjwt, async(req, res) => {
+noteRouter.patch("/edit/:id", VerifyUser, async(req, res) => {
     const authUser = (req as any).auth;
     const data: NoteCreationForm = req.body;
     const validate = noteCreationValidator.validate(data);
@@ -96,7 +96,7 @@ noteRouter.patch("/edit/:id", _expressjwt, async(req, res) => {
 // ========
 // ========
 
-noteRouter.get("/export-pdf/:id", _expressjwt, async(req, res) => {
+noteRouter.get("/export-pdf/:id", VerifyUser, async(req, res) => {
     const authUser = (req as any).auth;
     const id: number = parseInt(req.params["id"] as string);
     if(isNaN(id))
@@ -114,7 +114,7 @@ noteRouter.get("/export-pdf/:id", _expressjwt, async(req, res) => {
     return res.status(200).send(pdf);
 });
 
-noteRouter.post("/search", _expressjwt, async(req, res) => {
+noteRouter.post("/search", VerifyUser, async(req, res) => {
     const authUser = (req as any).auth;
     const data: NoteSearchForm = req.body;
     const validate = noteSearchValidator.validate(data);
