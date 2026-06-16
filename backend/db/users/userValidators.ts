@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { UserLoginForm, UserLoginWithOTPForm, UserPasswResetForm, UserRegistrationForm } from "../types";
+import { UserLoginForm, UserLoginWithOTPForm, UserPasswResetForm, UserRegistrationForm, UserVerifyRegistration } from "../types";
 
 export const userRegistrationValidator = Joi.object<UserRegistrationForm>({
     username: Joi.string().alphanum().min(2).max(32).required(),
@@ -11,6 +11,11 @@ export const userRegistrationValidator = Joi.object<UserRegistrationForm>({
         .label("Repeat Password")
         .messages({ 'any.only': '{{#label}} must match the password' })
 });
+
+export const userVerifyRegistrationValidator = Joi.object<UserVerifyRegistration>({
+    token: Joi.string().required(),
+    otp: Joi.string().required()
+})
 
 export const userLoginValidator = Joi.object<UserLoginForm>({
     username: Joi.string().alphanum().min(2).max(32).required(),

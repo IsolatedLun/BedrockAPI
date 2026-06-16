@@ -10,6 +10,8 @@ http:
     - name: id
       value: "14"
       type: path
+  body:
+    type: multipart-form
   auth:
     type: bearer
     token: "{{JWT}}"

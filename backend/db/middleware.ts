@@ -48,8 +48,6 @@ export async function ProtectedNote(req: any, res: any, next: any) {
         return res.status(400).send({ message: `Note with id of "${id}" not found` });
 
     const user = await User.findByPk(note.userId);
-    console.log(user)
-    console.log(req.auth)
     if(user.id != req.auth.id)
         return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
 

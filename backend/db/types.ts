@@ -8,6 +8,11 @@ export interface UserRegistrationForm {
     repeatPassword: string;
 };
 
+export interface UserVerifyRegistration {
+    token: string;
+    otp: string;
+};
+
 export interface UserLoginForm {
     username: string;
     password: string;

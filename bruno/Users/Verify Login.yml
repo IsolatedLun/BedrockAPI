@@ -1,7 +1,7 @@
 info:
-  name: Login OTP
+  name: Verify Login
   type: http
-  seq: 4
+  seq: 5
 
 http:
   method: POST
@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "email": "joemozian72@gmail.com",
-        "otp": "967816"
+        "token": "",
+        "otp": ""
       }
   auth: inherit
 

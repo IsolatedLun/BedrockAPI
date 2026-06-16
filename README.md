@@ -22,8 +22,9 @@ Authentication is done with JWT + OTP via google SMTP and passwords are encrypte
 ### Users
 - View All: /users/all
 - Register: /users/register
+- Verify Registration: /users/verify-registration
 - Login: /users/login
-- Login OTP: /users/login-otp
+- Verify Login: /users/verify-login
 
 ### Notes
 ***Disclaimer: a valid token must be used in the Authorization header***

@@ -1,17 +1,17 @@
 info:
-  name: Login
+  name: Verify Registration
   type: http
-  seq: 4
+  seq: 3
 
 http:
   method: POST
-  url: http://localhost:{{PORT}}/users/login
+  url: http://localhost:{{PORT}}/users/verify-registration
   body:
     type: json
     data: |-
       {
-        "username": "joe69",
-        "password": "passw123"
+        "token": "67ed84ba-9f71-4d3e-ae57-775ab2faa1f3",
+        "otp": "089065"
       }
   auth: inherit
 
