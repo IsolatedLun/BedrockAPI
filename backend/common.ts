@@ -22,3 +22,6 @@ export const otpAuth = new OTPAuth.TOTP({
   period: parseInt(process.env.OTP_PERIOD) || 45,
   secret: process.env.OTP_SECRET || "secret"
 });
+
+export const MAX_PV_ATTEMPTS = parseInt(process.env.MAX_PV_ATTEMPS) || 3;
+export const PV_COOLDOWN = parseInt(process.env.PV_COOLDOWN) || 5000; // 5000ms = 5s

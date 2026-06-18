@@ -8,6 +8,7 @@ interface PvAttrs {
   attempts: number;
   token: string;
   otp: string;
+  lastAttempt: Date;
 }
 
 type PvCreation = Optional<PvAttrs, 'id'>;
@@ -20,4 +21,5 @@ export class PV extends Model<PvAttrs, PvCreation> implements PvAttrs {
   @Column otp!: string;
   @Column attempts!: number;
   @Column token!: string;
+  @Column lastAttempt!: Date;
 }

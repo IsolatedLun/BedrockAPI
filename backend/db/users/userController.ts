@@ -1,7 +1,7 @@
 import argon2 from "argon2";
-import { AuthRequest, UserLoginForm, UserLoginWithOTPForm, UserRegistrationForm, UserVerifyRegistration } from "../types";
+import { AuthRequest, UserLoginForm, UserOtpWithPvForm, UserRegistrationForm } from "../types";
 import { User } from "./user";
-import { emailTransporter, otpAuth } from "../../common";
+import { emailTransporter, MAX_PV_ATTEMPTS, otpAuth, PV_COOLDOWN } from "../../common";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { PV } from "../pv/pv";
@@ -26,6 +26,7 @@ export async function registerUser(req: Request, res: Response) {
         const passwHash = await argon2.hash(data.password);
         const pvTok = generateRandTok();
         const otp = otpAuth.generate();
+
         await User.create({ username: data.username, email: data.email, password: passwHash, verified: false });
         await PV.create({ otp, attempts: 0, token: pvTok, username: data.username });
 
@@ -43,13 +44,20 @@ export async function registerUser(req: Request, res: Response) {
 }
 
 export async function verifyRegistration(req: Request, res: Response) {
-    const data: UserVerifyRegistration = req.body;
-    const pv = await PV.findOne({
-        where: { token: data.token }
-    });
+    const data: UserOtpWithPvForm = req.body;
+    const pv = await PV.findOne({ where: { token: data.token } });
+
+    if(pv.attempts >= MAX_PV_ATTEMPTS) {
+        const timePassed = Date.now() - pv.lastAttempt.getTime();
+        if(timePassed < PV_COOLDOWN)
+            return res.status(400).send({ message: "Too many attempts, please try again later" });
+        else
+            pv.attempts = 0;
+    }
 
     if (pv.otp !== data.otp) {
         pv.attempts++;
+        pv.lastAttempt = new Date();
         await pv.save();
 
         return res.status(400).send({ message: "Invalid OTP" });
@@ -89,12 +97,20 @@ export async function loginUser(req: AuthRequest, res: Response) {
 }
 
 export async function verifyLogin(req: AuthRequest, res: Response) {
-    const data: UserLoginWithOTPForm = req.body;
+    const data: UserOtpWithPvForm = req.body;
     const pv = await PV.findOne({ where: { token: data.token } });
+
+    if(pv.attempts >= MAX_PV_ATTEMPTS) {
+        const timePassed = Date.now() - pv.lastAttempt.getTime();
+        if(timePassed < PV_COOLDOWN)
+            return res.status(400).send({ message: "Too many attempts, please try again later" });
+        else
+            pv.attempts = 0;
+    }
 
     if (pv.otp !== data.otp) {
         pv.attempts++;
-
+        pv.lastAttempt = new Date();
         await pv.save();
 
         return res.status(400).send({ message: "Invalid OTP" });

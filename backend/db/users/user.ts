@@ -3,7 +3,7 @@ import { Table, Column, Model, HasMany, Default } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
 import { Note } from '../notes/note';
 
-interface UserAttrs { 
+export interface UserAttrs { 
   id: number; 
   username: string;
   email: string;

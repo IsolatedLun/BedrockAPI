@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { UserAttrs } from './users/user';
 
 // users
 export interface UserRegistrationForm {
@@ -8,7 +9,7 @@ export interface UserRegistrationForm {
     repeatPassword: string;
 };
 
-export interface UserVerifyRegistration {
+export interface UserOtpWithPvForm {
     token: string;
     otp: string;
 };
@@ -41,4 +42,4 @@ export interface NoteSearchForm {
 }
 
 // misc
-export type AuthRequest = Request & { auth: any };
+export type AuthRequest = Request & { auth: UserAttrs };
