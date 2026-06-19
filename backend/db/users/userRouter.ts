@@ -1,7 +1,7 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import { loginUser, registerUser, verifyLogin, verifyRegistration, ViewAllUsers } from "./userController";
-import { UserRequired, ValidateBody } from "../middleware";
+import { OtpWithPv, UserRequired, ValidateBody } from "../middleware";
 import { userLoginValidator, userRegistrationValidator, userOtpWithPvValidator } from "./userValidators";
 
 dotenv.config();
@@ -20,8 +20,9 @@ userRouter.post(
 
 userRouter.post(
     "/verify-registration", 
-    ValidateBody(userOtpWithPvValidator), 
-    verifyRegistration
+    ValidateBody(userOtpWithPvValidator),
+    OtpWithPv,
+    verifyRegistration as any
 );
 
 userRouter.post(
@@ -33,7 +34,8 @@ userRouter.post(
 
 userRouter.post(
     "/verify-login", 
-    ValidateBody(userOtpWithPvValidator), 
+    ValidateBody(userOtpWithPvValidator),
+    OtpWithPv,
     verifyLogin as any
 );
 

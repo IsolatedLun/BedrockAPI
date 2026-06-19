@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import Joi from "joi";
 import { User } from "./users/user";
 import { Note } from "./notes/note";
+import { PV } from "./pv/pv";
+import { MAX_PV_ATTEMPTS, PV_COOLDOWN } from "../common";
+import { UserOtpWithPvForm } from "./types";
 
 dotenv.config();
 
@@ -52,5 +55,36 @@ export async function ProtectedNote(req: any, res: any, next: any) {
         return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
 
     req.note = note;
+    next();
+}
+
+export async function OtpWithPv(req: any, res: any, next: any) {
+    const data: UserOtpWithPvForm = req.body;
+    const pv = await PV.findOne({ where: { token: data.token } });
+
+    if(pv.attempts >= MAX_PV_ATTEMPTS) {
+        const timePassed = Date.now() - pv.lastAttempt.getTime();
+        if(timePassed < PV_COOLDOWN) {
+            const timeLeft = ((PV_COOLDOWN - timePassed) / 1000).toFixed(1);
+            return res.status(400).send({ message: `Too many attempts, please try again later in ${timeLeft}s` });
+        }
+        else
+            pv.attempts = 0;
+    }
+
+    if (pv.otp !== data.otp) {
+        pv.attempts++;
+        pv.lastAttempt = new Date();
+        await pv.save();
+
+        return res.status(400).send({ message: "Invalid OTP" });
+    }
+
+    await pv.destroy();
+    const user = await User.findOne({ where: { username: pv.username } });
+    if (!user)
+        return res.status(404).send({ message: "User not found" });
+
+    req.auth = user;
     next();
 }

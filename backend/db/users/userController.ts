@@ -1,7 +1,7 @@
 import argon2 from "argon2";
-import { AuthRequest, UserLoginForm, UserOtpWithPvForm, UserRegistrationForm } from "../types";
+import { AuthRequest, UserLoginForm, UserRegistrationForm } from "../types";
 import { User } from "./user";
-import { emailTransporter, MAX_PV_ATTEMPTS, otpAuth, PV_COOLDOWN } from "../../common";
+import { emailTransporter, otpAuth } from "../../common";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { PV } from "../pv/pv";
@@ -43,34 +43,11 @@ export async function registerUser(req: Request, res: Response) {
     }
 }
 
-export async function verifyRegistration(req: Request, res: Response) {
-    const data: UserOtpWithPvForm = req.body;
-    const pv = await PV.findOne({ where: { token: data.token } });
-
-    if(pv.attempts >= MAX_PV_ATTEMPTS) {
-        const timePassed = Date.now() - pv.lastAttempt.getTime();
-        if(timePassed < PV_COOLDOWN)
-            return res.status(400).send({ message: "Too many attempts, please try again later" });
-        else
-            pv.attempts = 0;
-    }  
-
-    if (pv.otp !== data.otp) {
-        pv.attempts++;
-        pv.lastAttempt = new Date();
-        await pv.save();
-
-        return res.status(400).send({ message: "Invalid OTP" });
-    }
-
-    const user = await User.findOne({ where: { username: pv.username } });
-    if (!user) {
-        return res.status(404).send({ message: "User not found" });
-    }
+export async function verifyRegistration(req: AuthRequest, res: Response) {
+    const user = await User.findOne({ where: { username: req.auth.username } });
 
     user.verified = true;
     await user.save();
-    await pv.destroy();
 
     return res.status(200).send({ ok: true, message: "Account verified" });
 }
@@ -97,36 +74,12 @@ export async function loginUser(req: AuthRequest, res: Response) {
 }
 
 export async function verifyLogin(req: AuthRequest, res: Response) {
-    const data: UserOtpWithPvForm = req.body;
-    const pv = await PV.findOne({ where: { token: data.token } });
-
-    if(pv.attempts >= MAX_PV_ATTEMPTS) {
-        const timePassed = Date.now() - pv.lastAttempt.getTime();
-        if(timePassed < PV_COOLDOWN)
-            return res.status(400).send({ message: "Too many attempts, please try again later" });
-        else
-            pv.attempts = 0;
-    }
-
-    if (pv.otp !== data.otp) {
-        pv.attempts++;
-        pv.lastAttempt = new Date();
-        await pv.save();
-
-        return res.status(400).send({ message: "Invalid OTP" });
-    }
-
-    const user = await User.findOne({ where: { username: pv.username } });
-    if (!user)
-        return res.status(404).send({ message: "User not found" });
-
     const jwtTok = jwt.sign({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        password: user.password
+        id: req.auth.id,
+        username: req.auth.username,
+        email: req.auth.email,
+        password: req.auth.password
     }, process.env.JWT_SECRET || "secret"); jwtTok;
 
-    await pv.destroy();
     return res.status(200).send({ jwtTok });
 }
