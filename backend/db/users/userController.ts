@@ -53,7 +53,7 @@ export async function verifyRegistration(req: Request, res: Response) {
             return res.status(400).send({ message: "Too many attempts, please try again later" });
         else
             pv.attempts = 0;
-    }
+    }  
 
     if (pv.otp !== data.otp) {
         pv.attempts++;

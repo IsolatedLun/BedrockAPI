@@ -6,9 +6,9 @@ module.exports = {
     try {
       const defaultPassw = "passw123";
       await queryInterface.bulkInsert("Notes", [
-        { id: 13, userId: 5, title: "slop", text: "## slop2", createdAt: new Date(), updatedAt: new Date() },
-        { id: 14, userId: 6, title: "slop", text: "## slop3", createdAt: new Date(), updatedAt: new Date() },
-        { id: 15, userId: 7, title: "slop", text: "## slop4", createdAt: new Date(), updatedAt: new Date() },
+        { id: 1000, userId: 1000, title: "slop title 1", text: "## slop2", createdAt: new Date(), updatedAt: new Date() },
+        { id: 1001, userId: 1001, title: "slop title 2", text: "## slop3", createdAt: new Date(), updatedAt: new Date() },
+        { id: 1002, userId: 1002, title: "slop title 3", text: "## slop4", createdAt: new Date(), updatedAt: new Date() },
       ])
     } catch {  };
   },
