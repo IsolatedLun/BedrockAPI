@@ -26,7 +26,7 @@ export function VerifyUser(req: Request, res: Response, next: NextFunction) {
 
 export function ValidateBody(validator: Joi.ObjectSchema) {
     return (req: Request, res: Response, next: NextFunction) => {
-        const validate = validator.validate(req.data);
+        const validate = validator.validate(req.body);
         if(validate.error)
             return res.status(400).send({ message: validate.error.details[0].message });
         next();
