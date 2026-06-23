@@ -1,5 +1,16 @@
 import { Request } from 'express';
 import { UserAttrs } from './users/user';
+import { NoteAttrs } from './notes/note';
+
+declare global {
+    namespace Express {
+        interface Request {
+            auth?: UserAttrs,
+            note?: NoteAttrs,
+            data?: any;
+        }
+    }
+}
 
 // users
 export interface UserRegistrationForm {

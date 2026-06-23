@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "title": "new note",
-        "text": "![Picture](https://picsum.photos/200/300)"
+        "title": "new note, SUIIIII",
+        "text": "![Picture](https://picsum.photos/200/300), wassup"
       }
   auth:
     type: bearer

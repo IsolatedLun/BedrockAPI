@@ -1,5 +1,5 @@
 import argon2 from "argon2";
-import { AuthRequest, UserLoginForm, UserRegistrationForm } from "../types";
+import { UserLoginForm, UserRegistrationForm } from "../types";
 import { User } from "./user";
 import { emailTransporter, otpAuth } from "../../common";
 import * as jwt from "jsonwebtoken";
@@ -12,12 +12,11 @@ dotenv.config();
 
 export async function ViewAllUsers(req: Request, res: Response) {
     const users = await User.findAll();
-    return res.status(200).send({ users });
+    return res.status(201).send({ users });
 }
 
 export async function registerUser(req: Request, res: Response) {
     const data: UserRegistrationForm = req.body;
-    
     const existingUser = await User.findOne({ where: { username: data.username, email: data.email } });
     if(existingUser)
         return res.status(400).send({ message: "User already exists" });
@@ -37,22 +36,22 @@ export async function registerUser(req: Request, res: Response) {
             html: `Your verification code is <b>${otp}</b>`
         });
 
-        res.status(200).send({ ok: true, pvTok });
+        res.status(201).send({ ok: true, pvTok });
     } catch(e) {
         res.status(400).send({ message: "Something went wrong" });
     }
 }
 
-export async function verifyRegistration(req: AuthRequest, res: Response) {
+export async function verifyRegistration(req: Request, res: Response) {
     const user = await User.findOne({ where: { username: req.auth.username } });
 
     user.verified = true;
     await user.save();
 
-    return res.status(200).send({ ok: true, message: "Account verified" });
+    return res.status(201).send({ ok: true, message: "Account verified" });
 }
 
-export async function loginUser(req: AuthRequest, res: Response) {
+export async function loginUser(req: Request, res: Response) {
     const data: UserLoginForm = req.body;
     const user = req.auth;
 
@@ -68,12 +67,12 @@ export async function loginUser(req: AuthRequest, res: Response) {
             html: `Use <b>${otp}</b> to log into BedrockAPI`
         })
 
-        return res.status(200).send({ pvTok });
+        return res.status(201).send({ pvTok });
     }
     return res.status(400).send({ message: "Passwords do not match" });
 }
 
-export async function verifyLogin(req: AuthRequest, res: Response) {
+export async function verifyLogin(req: Request, res: Response) {
     const jwtTok = jwt.sign({
         id: req.auth.id,
         username: req.auth.username,
@@ -81,5 +80,5 @@ export async function verifyLogin(req: AuthRequest, res: Response) {
         password: req.auth.password
     }, process.env.JWT_SECRET || "secret"); jwtTok;
 
-    return res.status(200).send({ jwtTok });
+    return res.status(201).send({ jwtTok });
 }

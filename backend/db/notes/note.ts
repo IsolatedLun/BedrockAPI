@@ -3,7 +3,7 @@ import { Table, Column, Model, ForeignKey, BelongsTo } from 'sequelize-typescrip
 import { Optional } from 'sequelize';
 import { User } from '../users/user';
 
-interface NoteAttrs { 
+export interface NoteAttrs { 
     id: number; 
     title: string; 
     text: string; 

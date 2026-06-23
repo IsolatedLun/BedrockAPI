@@ -8,7 +8,7 @@ http:
   url: http://localhost:{{PORT}}/notes/:id
   params:
     - name: id
-      value: "10"
+      value: "19"
       type: path
   auth:
     type: bearer

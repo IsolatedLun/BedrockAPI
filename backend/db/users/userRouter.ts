@@ -22,21 +22,21 @@ userRouter.post(
     "/verify-registration", 
     ValidateBody(userOtpWithPvValidator),
     OtpWithPv,
-    verifyRegistration as any
+    verifyRegistration
 );
 
 userRouter.post(
     "/login", 
     ValidateBody(userLoginValidator), 
     UserRequired, 
-    loginUser as any
+    loginUser
 );
 
 userRouter.post(
     "/verify-login", 
     ValidateBody(userOtpWithPvValidator),
     OtpWithPv,
-    verifyLogin as any
+    verifyLogin
 );
 
 export default userRouter;

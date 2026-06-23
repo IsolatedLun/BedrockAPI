@@ -12,7 +12,7 @@ http:
       {
         "username": "joe67",
         "email": "joemozian72@gmail.com",
-        "password": "passw123",
+        "password": "passtyftfw123",
         "repeatPassword": "passw123"
       }
   auth: inherit

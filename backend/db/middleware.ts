@@ -1,21 +1,22 @@
 import * as jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 import Joi from "joi";
-import { User } from "./users/user";
+import { User, UserAttrs } from "./users/user";
 import { Note } from "./notes/note";
 import { PV } from "./pv/pv";
 import { MAX_PV_ATTEMPTS, PV_COOLDOWN } from "../common";
 import { UserOtpWithPvForm } from "./types";
+import { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 
-export function VerifyUser(req: any, res: any, next: any) {
+export function VerifyUser(req: Request, res: Response, next: NextFunction) {
     const tok: string = req.headers["authorization"].split(" ")[1];
-    if(tok === null)
+    if(!tok)
         return res.status(401).send({ message: "JWT token is missing" });
 
     try {
-        const payload = jwt.verify(tok, process.env.JWT_SECRET || "secret");
+        const payload = jwt.verify(tok, process.env.JWT_SECRET || "secret") as UserAttrs;
         req.auth = payload;
         next();
     } catch(err) {
@@ -24,7 +25,7 @@ export function VerifyUser(req: any, res: any, next: any) {
 }
 
 export function ValidateBody(validator: Joi.ObjectSchema) {
-    return (req: any, res: any, next: any) => {
+    return (req: Request, res: Response, next: NextFunction) => {
         const validate = validator.validate(req.data);
         if(validate.error)
             return res.status(400).send({ message: validate.error.details[0].message });
@@ -32,7 +33,7 @@ export function ValidateBody(validator: Joi.ObjectSchema) {
     }
 }
 
-export async function UserRequired(req: any, res: any, next: any) {
+export async function UserRequired(req: Request, res: Response, next: NextFunction) {
     const user = await User.findOne({ where: { username: req.body.username } });
     if(user === null)
         return res.status(400).send({ message: "User does not exist" });
@@ -41,24 +42,24 @@ export async function UserRequired(req: any, res: any, next: any) {
     next();
 }
 
-export async function ProtectedNote(req: any, res: any, next: any) {
+export async function ProtectedNote(req: Request, res: Response, next: NextFunction) {
     const id: number = parseInt(req.params["id"] as string);
     if(isNaN(id))
         return res.status(400).send({ message: `"${id}" is an invalid id` });
 
-    const note = await Note.findByPk(id);
-    if(note === null)
-        return res.status(400).send({ message: `Note with id of "${id}" not found` });
-
-    const user = await User.findByPk(note.userId);
-    if(user.id != req.auth.id)
+    const user = await User.findByPk(req.auth.id);
+    if(!user)
         return res.status(400).send({ message: `Note with id of "${id}" does not belong to user` });
+
+    const note = await Note.findByPk(id);
+    if(!note)
+        return res.status(400).send({ message: `Note with id of "${id}" not found` });
 
     req.note = note;
     next();
 }
 
-export async function OtpWithPv(req: any, res: any, next: any) {
+export async function OtpWithPv(req: Request, res: Response, next: NextFunction) {
     const data: UserOtpWithPvForm = req.body;
     const pv = await PV.findOne({ where: { token: data.token } });
 

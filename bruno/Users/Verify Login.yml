@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "token": "8f9f599e-324a-4a89-baff-abeacd2f6574",
-        "otp": "339793" 
+        "token": "2d25b0d2-bc15-48c1-9543-7b967bb8c401",
+        "otp": "321059" 
       }
   auth: inherit
 
