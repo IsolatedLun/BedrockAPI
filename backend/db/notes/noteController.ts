@@ -20,14 +20,14 @@ export async function CreateNote(req: Request, res: Response) {
     const data = req.body;
     const note = await Note.create({ userId: user.id, title: data.title, text: data.text });
 
-    return res.status(201).send({ ok: true, note });
+    return res.status(201).send({ note });
 }
 
 export async function DeleteNote(req: Request, res: Response) {
     const note = (req as any).note;
 
     await Note.destroy({ where: { id: note.id } });
-    return res.status(201).send({ ok: true, deleted: true, note });
+    return res.status(201).send({ deleted: true, note });
 }
 
 export async function EditNote(req: Request, res: Response) {
@@ -64,5 +64,5 @@ export async function SearchNotes(req: Request, res: Response) {
         }
     });
 
-    return res.status(201).send({ ok: true, notes: filteredNotes });
+    return res.status(201).send({ notes: filteredNotes });
 }

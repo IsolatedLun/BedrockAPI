@@ -36,7 +36,7 @@ export async function registerUser(req: Request, res: Response) {
             html: `Your verification code is <b>${otp}</b>`
         });
 
-        res.status(201).send({ ok: true, pvTok });
+        res.status(201).send({ pvTok });
     } catch(e) {
         res.status(400).send({ message: "Something went wrong" });
     }
@@ -48,7 +48,7 @@ export async function verifyRegistration(req: Request, res: Response) {
     user.verified = true;
     await user.save();
 
-    return res.status(201).send({ ok: true, message: "Account verified" });
+    return res.status(201).send({ message: "Account verified" });
 }
 
 export async function loginUser(req: Request, res: Response) {
